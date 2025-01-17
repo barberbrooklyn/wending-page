@@ -6,9 +6,8 @@ export default function StoryComponent() {
     <section className={styles.section}>
       <div className={styles.imageContainer}>
         <Image
-          src="images/gallery/notelopierdas.png"
+          src="/images/gallery/notelopierdas.png" // Asegúrate de que la ruta sea correcta
           alt="Descriptive Alt Text"
-          fill
           width={700}
           height={475}
           className={styles.image}
