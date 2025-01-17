@@ -50,7 +50,7 @@ export default function Countdown() {
         <div className="mt-12 flex justify-center items-center">
           <Heart className="text-spring-pink w-6 h-6 mr-2 animate-pulse" />
           <p className="text-xl md:text-2xl font-serif">
-            15 de Febrero, 2025 - 2:00 PM
+            15 de Febrero, 2025 - 3:00 PM
           </p>
           <Heart className="text-spring-pink w-6 h-6 ml-2 animate-pulse" />
         </div>
