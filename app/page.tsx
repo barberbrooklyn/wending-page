@@ -17,8 +17,6 @@ export default function Home() {
       <Hero />
       <Countdown />
       <Story />
-      
-      
       <Details />
       <Libro />
       <ImportantInfo />
