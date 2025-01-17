@@ -24,7 +24,7 @@ export default function Story() {
       </div>
       <div className="mt-12">
         <Image
-          src="images/gallery/notelopierdas.png"
+          src="/images/gallery/notelopierdas.png"
           alt="Leidy y John juntos"
           width={600}
           height={400}
