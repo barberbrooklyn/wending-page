@@ -1,5 +1,5 @@
 import React from 'react';
-import StoryComponent from './StoryComponent';
+import Image from 'next/image';
 
 export default function Story() {
   return (
@@ -22,6 +22,16 @@ export default function Story() {
           Hoy podemos dar testimonio de que Dios, en su perfecto plan, ha guiado cada paso de nuestro camino. Su fidelidad ha sido inquebrantable, y estamos seguros de que seguirá obrando con amor y propósito de generación en generación.
         </p>
       </div>
+      <div className="mt-12">
+        <Image
+          src="images/gallery/notelopierdas.png"
+          alt="Leidy y John juntos"
+          width={600}
+          height={400}
+          className="rounded-lg shadow-lg mx-auto"
+        />
+      </div>
     </section>
   );
 }
+
