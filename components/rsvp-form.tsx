@@ -1,16 +1,16 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { Button } from "@/components/ui/button";
-import PhoneInput from 'react-phone-input-2';
-import 'react-phone-input-2/lib/style.css';
-import './phone-input-styles.css';
+import { useState } from 'react'
+import { Button } from "@/components/ui/button"
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
+import './phone-input-styles.css'
 
 const americanCountries = [
   'us', 'ca', 'mx', 'br', 'ar', 'co', 'pe', 've', 'cl', 'ec', 'gt', 'cu', 'ht', 
   'bo', 'do', 'hn', 'py', 'ni', 'sv', 'cr', 'pa', 'uy', 'jm', 'tt', 'gy', 'sr', 
   'bz', 'bb', 'bs', 'ag', 'dm', 'lc', 'vc', 'gd', 'kn'
-];
+] 
 
 const RsvpForm = () => {
   const [formData, setFormData] = useState({
@@ -25,8 +25,10 @@ const RsvpForm = () => {
 
   const handlePhoneChange = (value: string, country: any) => {
     setSelectedCountry(country.countryCode);
+    // Extraer solo el número sin el código de país
     const numberWithoutCode = value.replace(country.dialCode, '').trim();
     setPhoneNumber(numberWithoutCode);
+    // Guardar el número completo en el formData (con código de país para el envío)
     setFormData(prev => ({
       ...prev,
       phone: value
@@ -36,31 +38,29 @@ const RsvpForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    const backendUrl = "https://tu-dominio.com/api/save-rsvp.php"; // Cambia esto por la URL de tu archivo PHP
-    const payload = {
-      name: formData.name,
-      phone: formData.phone,
-      attending: formData.attending
-    };
+    const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSfbvX4xUuJj85Wz4-b3nRF7mN4URM3uLk11uG7CBloP0TKiFA/formResponse";
+    const formBody = new URLSearchParams({
+      "entry.1148247342": formData.name,
+      "entry.649641038": formData.phone,
+      "entry.35718745": formData.attending
+    });
 
     try {
-      const response = await fetch(backendUrl, {
+      const response = await fetch(formUrl, {
         method: 'POST',
+        mode: 'no-cors',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded'
         },
-        body: JSON.stringify(payload),
+        body: formBody.toString()
       });
-      
-      if (response.ok) {
+      if (response) {
         setSubmitted(true);
-        alert('Tu respuesta ha sido enviada con éxito.');
-      } else {
-        alert('Hubo un error al enviar tu respuesta. Inténtalo nuevamente.');
+        alert('Toca el boton "Aceptar"');
       }
     } catch (error) {
-      console.error('Error al enviar el formulario:', error);
-      alert('No se pudo enviar tu respuesta. Por favor, verifica tu conexión.');
+      console.error('Error submitting form:', error);
+      alert('There was an error submitting your RSVP. Please try again.');
     }
   };
 
@@ -72,9 +72,9 @@ const RsvpForm = () => {
         {submitted ? (
           <div className="text-center">
             {formData.attending === 'Yes, I will attend' ? (
-              <p className="text-lg font-semibold">¡Gracias por confirmar tu asistencia! Estamos emocionados de verte en nuestra boda 🥳🎉 </p>
+              <p className="text-lg font-semibold">¡Gracias por confirmar tu asistencia! Estamos emocionados de verte en nuestra boda, será un día muy especial para todos 🥳🎉 </p>
             ) : (
-              <p className="text-lg font-semibold">Lamentamos que no puedas asistir. ¡Esperamos verte pronto! 😖</p>
+              <p className="text-lg font-semibold">Lamentamos que no puedas asistir, pero sabemos que estarás con nosotros en espíritu. ¡ Esperamos verte pronto 😖 !</p>
             )}
           </div>
         ) : (
@@ -149,7 +149,7 @@ const RsvpForm = () => {
         )}
       </div>
     </section>
-  );
-};
+  )
+}
 
 export default RsvpForm;
