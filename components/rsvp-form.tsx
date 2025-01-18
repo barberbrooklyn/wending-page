@@ -147,4 +147,3 @@ const RsvpForm = () => {
 }
 
 export default RsvpForm
-
