@@ -1,5 +1,17 @@
 {
-  "node": {},
+  "node": {
+    "40f6d7782011be1e89e9ee477068882ad762c302a7": {
+      "workers": {
+        "app/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5CBRIANN%5C%5CDesktop%5C%5Cwending-page%5C%5Capp%5C%5Cactions%5C%5CsubmitRsvp.ts%22%2C%5B%5B%2240f6d7782011be1e89e9ee477068882ad762c302a7%22%2C%22submitRsvp%22%5D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/page": "action-browser"
+      }
+    }
+  },
   "edge": {},
   "encryptionKey": "5DfP2lAPwxAFWw29GpswiUmM/D/N2WfQJD2kbknD3LA="
 }

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import './phone-input-styles.css'
+import { submitRsvp } from '@/app/actions/submitRsvp'
 
 const americanCountries = [
   'us', 'ca', 'mx', 'br', 'ar', 'co', 'pe', 've', 'cl', 'ec', 'gt', 'cu', 'ht', 
@@ -22,45 +23,37 @@ const RsvpForm = () => {
   const [selectedCountry, setSelectedCountry] = useState('mx');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState('');
 
   const handlePhoneChange = (value: string, country: any) => {
     setSelectedCountry(country.countryCode);
-    // Extraer solo el número sin el código de país
     const numberWithoutCode = value.replace(country.dialCode, '').trim();
     setPhoneNumber(numberWithoutCode);
-    // Guardar el número completo en el formData (con código de país para el envío)
     setFormData(prev => ({
       ...prev,
       phone: value
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
-    const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSfbvX4xUuJj85Wz4-b3nRF7mN4URM3uLk11uG7CBloP0TKiFA/formResponse";
-    const formBody = new URLSearchParams({
-      "entry.1148247342": formData.name,
-      "entry.649641038": formData.phone,
-      "entry.35718745": formData.attending
-    });
+    setError('');
+
+    const formDataToSubmit = new FormData();
+    formDataToSubmit.append('name', formData.name);
+    formDataToSubmit.append('phone', formData.phone);
+    formDataToSubmit.append('attending', formData.attending);
 
     try {
-      const response = await fetch(formUrl, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: formBody.toString()
-      });
-      if (response) {
+      const result = await submitRsvp(formDataToSubmit);
+      if (result.success) {
         setSubmitted(true);
-        alert('Toca el boton "Aceptar"');
+      } else {
+        setError(result.error || 'Hubo un error al enviar el formulario. Por favor, inténtalo de nuevo.');
       }
     } catch (error) {
-      console.error('Error submitting form:', error);
-      alert('There was an error submitting your RSVP. Please try again.');
+      console.error('Error al enviar el formulario:', error);
+      setError('Hubo un error al enviar el formulario. Por favor, inténtalo de nuevo.');
     }
   };
 
@@ -137,6 +130,7 @@ const RsvpForm = () => {
                 <option value="No, I will not attend">No podré asistir</option>
               </select>
             </div>
+            {error && <p className="text-red-500">{error}</p>}
             <Button
               type="submit"
               variant="outline"
@@ -152,4 +146,5 @@ const RsvpForm = () => {
   )
 }
 
-export default RsvpForm;
+export default RsvpForm
+
