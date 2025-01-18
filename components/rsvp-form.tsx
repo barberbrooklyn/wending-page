@@ -23,7 +23,7 @@ const RsvpForm = () => {
   const [selectedCountry, setSelectedCountry] = useState('mx');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
 
   const handlePhoneChange = (value: string, country: any) => {
     setSelectedCountry(country.countryCode);
@@ -37,7 +37,7 @@ const RsvpForm = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError('');
+    setMessage('');
 
     const formDataToSubmit = new FormData();
     formDataToSubmit.append('name', formData.name);
@@ -48,12 +48,13 @@ const RsvpForm = () => {
       const result = await submitRsvp(formDataToSubmit);
       if (result.success) {
         setSubmitted(true);
+        setMessage(result.message || 'Gracias por tu respuesta!');
       } else {
-        setError(result.error || 'Hubo un error al enviar el formulario. Por favor, inténtalo de nuevo.');
+        setMessage(result.error || 'Hubo un error al enviar el formulario. Por favor, inténtalo de nuevo.');
       }
     } catch (error) {
       console.error('Error al enviar el formulario:', error);
-      setError('Hubo un error al enviar el formulario. Por favor, inténtalo de nuevo.');
+      setMessage('Hubo un error al enviar el formulario. Por favor, inténtalo de nuevo.');
     }
   };
 
@@ -64,11 +65,7 @@ const RsvpForm = () => {
         
         {submitted ? (
           <div className="text-center">
-            {formData.attending === 'Yes, I will attend' ? (
-              <p className="text-lg font-semibold">¡Gracias por confirmar tu asistencia! Estamos emocionados de verte en nuestra boda, será un día muy especial para todos 🥳🎉 </p>
-            ) : (
-              <p className="text-lg font-semibold">Lamentamos que no puedas asistir, pero sabemos que estarás con nosotros en espíritu. ¡ Esperamos verte pronto 😖 !</p>
-            )}
+            <p className="text-lg font-semibold">{message}</p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -126,15 +123,15 @@ const RsvpForm = () => {
                 required
               >
                 <option value="">Selecciona una opción</option>
-                <option value="Yes, I will attend">Sí, asistiré</option>
-                <option value="No, I will not attend">No podré asistir</option>
+                <option value="Sí, asistiré">Sí, asistiré</option>
+                <option value="No podré asistir">No podré asistir</option>
               </select>
             </div>
-            {error && <p className="text-red-500">{error}</p>}
+            {message && <p className="text-red-500">{message}</p>}
             <Button
               type="submit"
               variant="outline"
-              size="icon"
+              size="lg"
               className="w-full bg-spring-lavender hover:bg-spring-lavender/80 text-gray-800 font-bold py-3 px-6 rounded transition-colors"
             >
               Confirmar
@@ -147,3 +144,4 @@ const RsvpForm = () => {
 }
 
 export default RsvpForm
+
